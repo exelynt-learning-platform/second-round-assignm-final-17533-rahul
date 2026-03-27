@@ -12,4 +12,18 @@ Final Project Assignment - This repository contains the complete final project c
 - Redux state management
 - Loading & error handling
 
-“Note: For simplicity and assignment requirements, API is called directly from frontend. In production, a backend proxy would be used to secure API keys.”
+## 🔐 API Security
+
+This project uses a backend server (`server.js`) to securely interact with the OpenAI API.
+
+* The API key is stored in environment variables on the server.
+* The frontend never directly calls the OpenAI API.
+* All requests are routed through a backend endpoint (`/api/chat`).
+
+### Why?
+
+Calling OpenAI API directly from the frontend exposes the API key in the browser, which is a security risk. Using a backend proxy ensures the key remains secure.
+
+### Flow:
+
+Frontend → Backend → OpenAI API
