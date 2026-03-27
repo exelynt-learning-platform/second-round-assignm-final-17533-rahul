@@ -14,17 +14,14 @@ export const sendMessage = createAsyncThunk(
     try {
       const state = getState();
 
-      const newUserMessage = createMessage("user", message);
-
-      const messages = [
-        ...state.chat.messages,
-        newUserMessage,
+    
+      const apiMessages = [
+        ...state.chat.messages.map(({ role, content }) => ({
+          role,
+          content,
+        })),
+        { role: "user", content: message },
       ];
-
-      const apiMessages = messages.map(({ role, content }) => ({
-        role,
-        content,
-      }));
 
       const res = await fetchAIResponse(apiMessages);
 
@@ -49,16 +46,12 @@ const chatSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(sendMessage.pending, (state, action) => {
+     .addCase(sendMessage.pending, (state, action) => {
   state.loading = true;
   state.error = null;
 
-  state.messages.push({
-    id: Date.now() + Math.random(),
-    role: "user",
-    content: action.meta.arg,
-  });
-});
+  state.messages.push(createMessage("user", action.meta.arg));
+})
 
 .addCase(sendMessage.fulfilled, (state, action) => {
   state.loading = false;
