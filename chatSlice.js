@@ -45,13 +45,13 @@ const chatSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(sendMessage.pending, (state, action) => {
- lastMessage.loading = true;
+   .addCase(sendMessage.pending, (state, action) => {
+  state.loading = true;
   state.error = null;
 
   state.messages.push(createMessage("user", action.meta.arg));
 })
-
+      
 .addCase(sendMessage.fulfilled, (state, action) => {
   state.loading = false;
 
