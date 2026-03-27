@@ -1,21 +1,17 @@
 export const fetchAIResponse = async (messages) => {
-  const res = await fetch(process.env.REACT_APP_OPENAI_URL, {
+  const res = await fetch("http://localhost:5000/api/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
     },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      messages,
-    }),
+    body: JSON.stringify({ messages }),
   });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.error?.message || "API Error");
+    throw new Error(data.error || "API Error");
   }
 
-  return data.choices[0].message.content;
+  return data.reply;
 };
