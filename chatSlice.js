@@ -67,7 +67,7 @@ const chatSlice = createSlice({
   const lastMessage = state.messages[state.messages.length - 1];
 
   if (lastMessage?.role === "user") {
-    lastMessage.failed = true;
+    lastMessage.failed = true; 
   }
 });
   },
