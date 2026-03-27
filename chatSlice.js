@@ -3,9 +3,16 @@ import { fetchAIResponse } from "./chatAPI";
 
 export const sendMessage = createAsyncThunk(
   "chat/sendMessage",
-  async (message, { rejectWithValue }) => {
+  async (message, { getState, rejectWithValue }) => {
     try {
-      const res = await fetchAIResponse(message);
+      const state = getState();
+
+      const messages = [
+        ...state.chat.messages,
+        { role: "user", content: message },
+      ];
+
+      const res = await fetchAIResponse(messages);
       return res;
     } catch (err) {
       return rejectWithValue(err.message);
