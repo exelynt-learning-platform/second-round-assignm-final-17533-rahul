@@ -10,19 +10,15 @@ const createMessage = (role, content) => ({
 
 export const sendMessage = createAsyncThunk(
   "chat/sendMessage",
- export const sendMessage = createAsyncThunk(
-  "chat/sendMessage",
   async (message, { getState, rejectWithValue }) => {
     try {
       const state = getState();
 
-      
       const apiMessages = state.chat.messages.map(({ role, content }) => ({
         role,
         content,
       }));
 
-    
       apiMessages.push({ role: "user", content: message });
 
       const res = await fetchAIResponse(apiMessages);
