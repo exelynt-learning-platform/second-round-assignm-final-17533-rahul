@@ -1,6 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAIResponse } from "./chatAPI";
 
+const createMessage = (role, content) => ({
+  id: Date.now() + Math.random(), 
+  role,
+  content,
+  timestamp: Date.now(),
+});
+
 export const sendMessage = createAsyncThunk(
   "chat/sendMessage",
   async (message, { getState, rejectWithValue }) => {
@@ -13,13 +20,13 @@ export const sendMessage = createAsyncThunk(
       ];
 
       const res = await fetchAIResponse(messages);
-
-      return res;
+      return res; // string response
     } catch (err) {
       return rejectWithValue(err.message);
     }
   }
 );
+
 const chatSlice = createSlice({
   name: "chat",
   initialState: {
@@ -34,25 +41,19 @@ const chatSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-     .addCase(sendMessage.pending, (state, action) => {
-  state.loading = true;
-  state.error = null;
+      .addCase(sendMessage.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
 
-
-  state.messages.push({
-    id: Date.now(),
-    role: "user",
-    content: action.meta.arg,
-  });
-})
+        
+        state.messages.push(createMessage("user", action.meta.arg));
+      })
 
       .addCase(sendMessage.fulfilled, (state, action) => {
         state.loading = false;
 
-        state.messages.push({
-          role: "assistant",
-          content: action.payload.aiMessage,
-        });
+      
+        state.messages.push(createMessage("assistant", action.payload));
       })
 
       .addCase(sendMessage.rejected, (state, action) => {
@@ -61,3 +62,6 @@ const chatSlice = createSlice({
       });
   },
 });
+
+export const { clearChat } = chatSlice.actions;
+export default chatSlice.reducer;
