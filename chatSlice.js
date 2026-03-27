@@ -14,13 +14,21 @@ export const sendMessage = createAsyncThunk(
     try {
       const state = getState();
 
+      const newUserMessage = createMessage("user", message);
+
       const messages = [
         ...state.chat.messages,
-        { role: "user", content: message },
+        newUserMessage,
       ];
 
-      const res = await fetchAIResponse(messages);
-      return res; // string response
+      const apiMessages = messages.map(({ role, content }) => ({
+        role,
+        content,
+      }));
+
+      const res = await fetchAIResponse(apiMessages);
+
+      return res;
     } catch (err) {
       return rejectWithValue(err.message);
     }
