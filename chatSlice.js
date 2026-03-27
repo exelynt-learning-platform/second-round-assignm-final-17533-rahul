@@ -46,7 +46,7 @@ const chatSlice = createSlice({
   extraReducers: (builder) => {
     builder
     .addCase(sendMessage.pending, (state, action) => {
-  state.loading = true;
+ lastMessage.loading = true;
   state.error = null;
 
   state.messages.push(createMessage("user", action.meta.arg));
@@ -66,7 +66,7 @@ const chatSlice = createSlice({
 
   if (lastMessage?.role === "user") {
    lastMessage.failed = true;
-   lastMessage.retry = true;; 
+   lastMessage.retry = true;
   }
 });
   },
