@@ -61,7 +61,8 @@ const chatSlice = createSlice({
   state.messages.push({
     id: Date.now() + Math.random(),
     role: "assistant",
-    content: action.payload, // ✅ FIXED
+    content: action.payload, 
+    timestamp: Date.now(),
   });
 })
 
