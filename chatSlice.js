@@ -50,7 +50,7 @@ const chatSlice = createSlice({
     role: "user",
     content: action.meta.arg,
   });
-})
+});
 
 .addCase(sendMessage.fulfilled, (state, action) => {
   state.loading = false;
