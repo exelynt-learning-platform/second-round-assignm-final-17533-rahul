@@ -47,6 +47,8 @@ const chatSlice = createSlice({
     builder
    .addCase(sendMessage.pending, (state, action) => {
   state.loading = true;
+  state.error = null;
+
 
   state.messages.push(createMessage("user", action.meta.arg));
 })  
