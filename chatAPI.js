@@ -7,12 +7,15 @@ export const fetchAIResponse = async (messages) => {
     },
     body: JSON.stringify({
       model: "gpt-3.5-turbo",
-      messages: messages, 
+      messages,
     }),
   });
 
-  if (!res.ok) throw new Error("API Error");
-
   const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error?.message || "API Error");
+  }
+
   return data.choices[0].message.content;
 };
