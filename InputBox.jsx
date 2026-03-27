@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addUserMessage, sendMessage } from "../features/chat/chatSlice";
+import { sendMessage } from "../features/chat/chatSlice";
 
 const InputBox = () => {
   const [input, setInput] = useState("");
@@ -9,7 +9,7 @@ const InputBox = () => {
   const handleSend = () => {
     if (!input.trim()) return;
 
-    dispatch(addUserMessage(input));
+   
     dispatch(sendMessage(input));
     setInput("");
   };
