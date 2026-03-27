@@ -13,7 +13,11 @@ export const sendMessage = createAsyncThunk(
       ];
 
       const res = await fetchAIResponse(messages);
-      return res;
+
+      return {
+        userMessage: message,
+        aiMessage: res,
+      };
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -27,29 +31,35 @@ const chatSlice = createSlice({
     error: null,
   },
   reducers: {
-    addUserMessage: (state, action) => {
-      state.messages.push({ role: "user", content: action.payload });
-    },
     clearChat: (state) => {
       state.messages = [];
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(sendMessage.pending, (state) => {
+      .addCase(sendMessage.pending, (state, action) => {
         state.loading = true;
         state.error = null;
+
+        
+        state.messages.push({
+          role: "user",
+          content: action.meta.arg,
+        });
       })
+
       .addCase(sendMessage.fulfilled, (state, action) => {
         state.loading = false;
-        state.messages.push({ role: "assistant", content: action.payload });
+
+        state.messages.push({
+          role: "assistant",
+          content: action.payload.aiMessage,
+        });
       })
+
       .addCase(sendMessage.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
-
-export const { addUserMessage, clearChat } = chatSlice.actions;
-export default chatSlice.reducer;
