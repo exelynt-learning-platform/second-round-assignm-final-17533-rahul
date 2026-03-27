@@ -14,10 +14,7 @@ export const sendMessage = createAsyncThunk(
 
       const res = await fetchAIResponse(messages);
 
-      return {
-        userMessage: message,
-        aiMessage: res,
-      };
+      return res;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -37,16 +34,17 @@ const chatSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(sendMessage.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
+     .addCase(sendMessage.pending, (state, action) => {
+  state.loading = true;
+  state.error = null;
 
-        
-        state.messages.push({
-          role: "user",
-          content: action.meta.arg,
-        });
-      })
+
+  state.messages.push({
+    id: Date.now(),
+    role: "user",
+    content: action.meta.arg,
+  });
+})
 
       .addCase(sendMessage.fulfilled, (state, action) => {
         state.loading = false;
