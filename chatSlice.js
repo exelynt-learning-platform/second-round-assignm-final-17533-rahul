@@ -1,11 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAIResponse } from "./chatAPI";
-
-
-let messageId = 0;
+import { v4 as uuidv4 } from "uuid";
 
 const createMessage = (role, content) => ({
-  id: ++messageId,
+  id: uuidv4(), 
   role,
   content,
   timestamp: Date.now(),
