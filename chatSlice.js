@@ -42,19 +42,25 @@ const chatSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(sendMessage.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
+  state.loading = true;
+  state.error = null;
 
-        
-        state.messages.push(createMessage("user", action.meta.arg));
-      })
+  state.messages.push({
+    id: Date.now() + Math.random(),
+    role: "user",
+    content: action.meta.arg,
+  });
+})
 
-      .addCase(sendMessage.fulfilled, (state, action) => {
-        state.loading = false;
+.addCase(sendMessage.fulfilled, (state, action) => {
+  state.loading = false;
 
-      
-        state.messages.push(createMessage("assistant", action.payload));
-      })
+  state.messages.push({
+    id: Date.now() + Math.random(),
+    role: "assistant",
+    content: action.payload, // ✅ FIXED
+  });
+})
 
       .addCase(sendMessage.rejected, (state, action) => {
         state.loading = false;
