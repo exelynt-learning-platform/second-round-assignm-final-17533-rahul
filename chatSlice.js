@@ -67,3 +67,8 @@ const chatSlice = createSlice({
     lastMessage.failed = true;
   }
 });
+  },
+});
+
+export const { clearChat } = chatSlice.actions;
+export default chatSlice.reducer;
