@@ -12,6 +12,4 @@ Final Project Assignment - This repository contains the complete final project c
 - Redux state management
 - Loading & error handling
 
-## Note
-Do NOT expose API key in production. Use backend.
-*/
+“Note: For simplicity and assignment requirements, API is called directly from frontend. In production, a backend proxy would be used to secure API keys.”
