@@ -1,4 +1,4 @@
-export const fetchAIResponse = async (message) => {
+export const fetchAIResponse = async (messages) => {
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -7,7 +7,7 @@ export const fetchAIResponse = async (message) => {
     },
     body: JSON.stringify({
       model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: message }],
+      messages: messages, 
     }),
   });
 
