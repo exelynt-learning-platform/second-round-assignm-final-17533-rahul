@@ -44,7 +44,7 @@ const chatSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-     .addCase(sendMessage.pending, (state, action) => {
+    .addCase(sendMessage.pending, (state, action) => {
   state.loading = true;
   state.error = null;
 
@@ -54,20 +54,16 @@ const chatSlice = createSlice({
 .addCase(sendMessage.fulfilled, (state, action) => {
   state.loading = false;
 
-  state.messages.push({
-    id: Date.now() + Math.random(),
-    role: "assistant",
-    content: action.payload, 
-    timestamp: Date.now(),
-  });
+  state.messages.push(createMessage("assistant", action.payload));
 })
 
-      .addCase(sendMessage.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
-  },
-});
+.addCase(sendMessage.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload;
 
-export const { clearChat } = chatSlice.actions;
-export default chatSlice.reducer;
+  const lastMessage = state.messages[state.messages.length - 1];
+
+  if (lastMessage?.role === "user") {
+    lastMessage.failed = true;
+  }
+});
